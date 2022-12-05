@@ -29,7 +29,7 @@ def move(n, out_crate, in_crate):
 for i in range(crate_height + 2, len(f), 1):
   result = re.search(r"move (\d+) from (\d+) to (\d+)", f[i])
   cap_num = [int(e) for e in result.groups()]
-  move(cap_num[0], cap_num[1], cap_num[2])
+  move(*cap_num)
 
 # print result
 result_string = ""
