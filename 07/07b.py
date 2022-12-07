@@ -9,25 +9,21 @@ def up(path):
   return path[:path.rfind("/")]
 
 for c in f:
-  # is command
-  if c[0] == "$":
-    # is cd command
-    if c[2] == "c":
-      if c == "$ cd ..":
-        # update directory above
-        directory[up(path)] += directory[path]
-        path = up(path)
-      elif c != "$ cd /":
-        if path == "" or path[-1] != "/":
-          path += "/"
-        path += c[5:]
-  # is directory
-  elif c[0] == "d":
-    pass
   # is file
-  else:
+  if c[0].isnumeric():
     file_size = int(c.split(" ")[0])
     directory[path] += file_size
+  # is cd .. command
+  elif c == "$ cd ..":
+    # update directory above
+    directory[up(path)] += directory[path]
+    path = up(path)
+  # is cd command, not to root
+  elif c[2] == "c" and c != "$ cd /":
+    if path == "" or path[-1] != "/":
+      path += "/"
+    path += c[5:]
+  # ls commands and dir results are ignored
 
 # return to root path, update backwards along the way
 while path != "":
