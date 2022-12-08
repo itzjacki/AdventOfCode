@@ -1,4 +1,5 @@
-f = open("06/input.txt", "r").read()
+with open("06/input.txt", "r") as file:
+  f = file.read().splitlines()
 n_uniques = 4
 
 buffer = [None] * n_uniques

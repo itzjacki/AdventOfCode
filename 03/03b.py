@@ -1,4 +1,5 @@
-f = open("03/input.txt", "r").read().split("\n")
+with open("03/input.txt", "r") as file:
+  f = file.read().splitlines()
 
 def toPriority(letter):
   if ord(letter) > 91:
@@ -9,7 +10,6 @@ totalPriority = 0
 for i in range(int(len(f)/3)):
   for item in f[i * 3]:
     if item in f[i * 3 + 1] and item in f[i * 3 + 2]: 
-      print(item)
       totalPriority += toPriority(item)
       break
 

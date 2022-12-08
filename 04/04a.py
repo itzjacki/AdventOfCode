@@ -1,5 +1,6 @@
 import re
-f = open("04/input.txt", "r").read().splitlines()
+with open("04/input.txt", "r") as file:
+  f = file.read().splitlines()
 
 numberContained = 0
 

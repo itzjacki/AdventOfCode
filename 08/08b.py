@@ -1,4 +1,5 @@
-f = open("08/input.txt", "r").read().splitlines()
+with open("08/input.txt", "r") as file:
+  f = file.read().splitlines()
 # assumes quadratic grid
 length = len(f[0])
 
@@ -42,6 +43,4 @@ for n1 in range(length):
       tree_score *= find_distance(dir, n1, n2)
     scores[n1][n2] = tree_score
 
-
-[print(row) for row in scores]
 print(max(max(row) for row in scores))

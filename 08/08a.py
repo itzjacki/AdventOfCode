@@ -1,4 +1,5 @@
-f = open("08/input.txt", "r").read().splitlines()
+with open("08/input.txt", "r") as file:
+  f = file.read().splitlines()
 # assumes quadratic grid
 length = len(f[0])
 

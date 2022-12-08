@@ -1,6 +1,7 @@
 import re
 
-f = open("05/input.txt", "r").read().splitlines()
+with open("05/input.txt", "r") as file:
+  f = file.read().splitlines()
 
 # prep by finding size of crate array
 crate_array=[]

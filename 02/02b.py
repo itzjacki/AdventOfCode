@@ -1,5 +1,6 @@
-f = open("02/input.txt", "r")
-splitfile = f.readlines()
+with open("02/input.txt", "r") as f:
+  splitfile = f.readlines()
+  
 summedscore = 0
 
 for game in splitfile:

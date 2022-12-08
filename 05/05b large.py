@@ -4,7 +4,8 @@ import sys
 # Version of 5b in the progress of being modified to support the processing of
 # a very large version of the input file
 
-f = open("05/secondary_input.txt", "r").read().splitlines()
+with open("05/secondary_input.txt", "r") as file:
+  f = file.read().splitlines()
 
 # prep by finding size of crate array
 crate_array=[]

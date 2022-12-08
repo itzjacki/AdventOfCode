@@ -1,4 +1,5 @@
-f = open("03/input.txt", "r").read().split("\n")
+with open("03/input.txt", "r") as file:
+  f = file.read().splitlines()
 sacks = [[sack[:int(len(sack)/2)], sack[int(len(sack)/2):]] for sack in f]
 
 def toPriority(letter):
@@ -10,7 +11,6 @@ totalPriority = 0
 for sack in sacks:
   for item in sack[0]:
     if item in sack[1]:
-      print(item)
       totalPriority += toPriority(item)
       break
 

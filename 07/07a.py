@@ -1,6 +1,7 @@
 from collections import defaultdict
 
-f = open("07/input.txt", "r").read().splitlines()
+with open("07/input.txt", "r") as file:
+  f = file.read().splitlines()
 
 path = ""
 directory = defaultdict(int)
