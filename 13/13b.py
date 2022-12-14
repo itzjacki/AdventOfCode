@@ -1,8 +1,7 @@
-import ast
 from functools import cmp_to_key
 
 with open("13/input.txt", "r") as file:
-  lines = [ast.literal_eval(line) for line in file.read().splitlines() if line] + [[[2]]] + [[[6]]]
+  lines = [eval(line) for line in file.read().splitlines() if line] + [[[2]]] + [[[6]]]
 
 # Checks if 1 or more elements are a certain type (list, int, etc)
 def check_type (type, *elements):

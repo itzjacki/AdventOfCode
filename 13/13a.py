@@ -1,5 +1,3 @@
-import ast
-
 with open("13/input.txt", "r") as file:
   pairs = [[ast.literal_eval(packet) for packet in pair.splitlines()] for pair in file.read().split("\n\n")]
 
