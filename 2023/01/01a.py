@@ -31,13 +31,11 @@ def convert_to_number(text):
 def find_number_as_string(text, reversed):
   raw_matches = re.finditer(r'(?=([0-9]|one|two|three|four|five|six|seven|eight|nine))', text)
   matches = [match.group(1) for match in raw_matches]
-  print(text)
   if reversed:
     result = matches[-1]
   else:
     result = matches[0]
   result = convert_to_number(result)
-  print(result)
   return str(result)
 
 for line in splitfile:
