@@ -33,4 +33,4 @@ for seed_tuple in seeds:
     if value < smallest_location:
       smallest_location = value
     seeds_processed += 1
-    print("Processing rate: " + str(int(seeds_processed / (time.time() - start_time))) + " p/hr, Seeds processed: " + str(seeds_processed) + ", Seeds total: " + str(total_seeds) + ", Smallest so far: " + str(smallest_location), end='\r')
+    print("Seeds processed: " + str(seeds_processed) + ", Seeds total: " + str(total_seeds) + ", Smallest so far: " + str(smallest_location), end='\r')
