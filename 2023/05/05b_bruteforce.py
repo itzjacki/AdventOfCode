@@ -1,3 +1,5 @@
+import time
+
 with open("05/input.txt", "r") as f:
   splitfile = f.read().split("\n\n")
 
@@ -11,6 +13,7 @@ unprocessed_steps = [group.split("\n") for group in splitfile[1:]]
 
 seeds_processed = 0
 total_seeds = sum([seed_tuple[1] for seed_tuple in seeds])
+start_time = time.time() - 0.01
 
 steps = []
 
@@ -33,4 +36,4 @@ for seed_tuple in seeds:
     if value < smallest_location:
       smallest_location = value
     seeds_processed += 1
-    print("Seeds processed: " + str(seeds_processed) + ", Seeds total: " + str(total_seeds) + ", Smallest so far: " + str(smallest_location), end='\r\r\r')
+    print("Processing rate: " + str(int(seeds_processed / (time.time() - start_time))) + " p/hr, Seeds processed: " + str(seeds_processed) + ", Seeds total: " + str(total_seeds) + ", Smallest so far: " + str(smallest_location), end='\r')
