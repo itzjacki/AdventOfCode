@@ -29,4 +29,4 @@ if [[ "$response" =~ ^([nN])$ ]]; then
     exit 0
 fi
 
-code . -g "$daynumber/${daynumber}a.py"
+code . -g "/Users/jakobkielland/Documents/Code/hobby/advent-of-code/2023/$daynumber/${daynumber}a.py"
