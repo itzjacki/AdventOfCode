@@ -1,27 +1,17 @@
+import functools
+
+
 with open("12/input.txt", "r") as f:
   splitfile = f.read().split("\n")
 
 rows_unprocessed = [(row.split(" ")[0], [int(n) for n in row.split(" ")[1].split(",")])
                     for row in splitfile]
-rows = [(list("?".join([row[0]]*5)), row[1] * 5) for row in rows_unprocessed]
-
-total_variations = 0
-cache = {}
+rows = [(tuple("?".join([row[0]]*5)), tuple(row[1] * 5))
+        for row in rows_unprocessed]
 
 
-def cache_result(value, cache_key):
-  global cache
-  cache[cache_key] = value
-  return value
-
-
-def find_variations(s, n, must_be_dot=False, must_be_hashtag=False, debug_use_cache=True):
-  cache_key = ",".join(
-      s) + ",".join([str(num) for num in n]) + str(must_be_dot) + str(must_be_hashtag)
-
-  global cache
-  if cache_key in cache and debug_use_cache:
-    return cache[cache_key]
+@functools.cache  # Why reinvent the cache?
+def find_variations(s, n, must_be_dot=False, must_be_hashtag=False):
 
   # Early exit if branch has been processed to completion
   if len(s) == 0 and len(n) == 0:
@@ -41,28 +31,30 @@ def find_variations(s, n, must_be_dot=False, must_be_hashtag=False, debug_use_ca
     if must_be_hashtag:
       return 0
 
-    return cache_result(find_variations(s[1:], n), cache_key)
+    return find_variations(s[1:], n)
 
   elif s[0] == "#":
     if must_be_dot:
       return 0
 
     if n[0] == 1:
-      return cache_result(find_variations(s[1:], n[1:], must_be_dot=True), cache_key)
+      return find_variations(s[1:], n[1:], must_be_dot=True)
 
     elif n[0] > 1:
-      return cache_result(find_variations(s[1:], [n[0] - 1, *n[1:]], must_be_hashtag=True), cache_key)
+      return find_variations(s[1:], (n[0] - 1, *n[1:]), must_be_hashtag=True)
 
   elif s[0] == "?":
     if must_be_dot:
-      return cache_result(find_variations([".", *s[1:]], n), cache_key)
+      return find_variations((".", *s[1:]), n)
 
     elif must_be_hashtag:
-      return cache_result(find_variations(["#", *s[1:]], n), cache_key)
+      return find_variations(("#", *s[1:]), n)
 
     else:
-      return cache_result(find_variations([".", *s[1:]], n) + find_variations(["#", *s[1:]], n), cache_key)
+      return find_variations((".", *s[1:]), n) + find_variations(("#", *s[1:]), n)
 
+
+total_variations = 0
 
 for row_index, row in enumerate(rows):
   print("Progress", row_index + 1, "/", len(rows), end="\r")
