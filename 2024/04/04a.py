@@ -5,7 +5,7 @@ with open("04/input.txt", "r") as f:
 
 
 def transpose(matrix):
-  return [[matrix[col][row] for col in range(len(matrix[row]))] for row in range(len(matrix))]
+  return list(zip(*matrix))
 
 
 def mirror(matrix):

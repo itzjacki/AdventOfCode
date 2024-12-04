@@ -4,11 +4,26 @@ with open("04/input.txt", "r") as f:
 # Oh man i really regret my choices in part 1 now...
 sum = 0
 
+
+def tile(row, col):
+  return splitfile[row][col]
+
+
+def val(letter):
+  return 1 if letter == 'M' else 2 if letter == 'S' else 0
+
+
+def is_mas_cross(row, col):
+  if tile(row, col) != 'A':
+    return False
+  checksum = (val(tile(row - 1, col - 1)) + val(tile(row + 1, col + 1)),
+              val(tile(row + 1, col - 1)) + val(tile(row - 1, col + 1)))
+  return checksum == (3, 3)
+
+
 for row in range(1, len(splitfile) - 1):
   for col in range(1, len(splitfile[row]) - 1):
-    if splitfile[row][col] == "A":
-      # This makes me want to see how my eyes react to having napalm poured on them
-      if ((splitfile[row - 1][col - 1] == "M" and splitfile[row + 1][col + 1] == "S") or (splitfile[row - 1][col - 1] == "S" and splitfile[row + 1][col + 1] == "M")) and ((splitfile[row + 1][col - 1] == "M" and splitfile[row - 1][col + 1] == "S") or (splitfile[row + 1][col - 1] == "S" and splitfile[row - 1][col + 1] == "M")):
-        sum += 1
+    if is_mas_cross(row, col):
+      sum += 1
 
 print(sum)
