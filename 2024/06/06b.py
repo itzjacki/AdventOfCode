@@ -4,7 +4,7 @@ with open("06/input.txt", "r") as f:
   splitfile = f.read().split("\n")
 
 
-def tile(pos, override_tile):
+def tile(pos, override_tile=(-1, -1)):
   if pos == override_tile:
     return "#"
   if 0 <= pos[0] < len(splitfile) and 0 <= pos[1] < len(splitfile[0]):
@@ -27,6 +27,27 @@ def next_tile(y, x, dir):
     return y + 1, x
   else:  # W
     return y, x - 1
+
+
+def get_relevant_tiles(board):
+  tiles_visited = set()
+  row, col = find_start(splitfile)
+  direction = "N"
+  directions = ["N", "E", "S", "W"]
+
+  while True:
+    if tile((row, col)) == ".":
+      tiles_visited.add((row, col))
+
+    if tile(next_tile(row, col, direction)) == "#":
+      direction = directions[(directions.index(
+          direction) + 1) % len(directions)]
+    elif tile(next_tile(row, col, direction)) == None:
+      break
+
+    row, col = next_tile(row, col, direction)
+
+  return tiles_visited
 
 
 def is_loop(board, override_tile):
@@ -52,12 +73,11 @@ def is_loop(board, override_tile):
 
 loops = 0
 
-for row_index, row_to_check in enumerate(splitfile):
-  for col_index, spot_to_check in enumerate(row_to_check):
-    if spot_to_check == ".":
-      if is_loop(splitfile, (row_index, col_index)):
-        print(row_index, col_index)
-        loops += 1
-    # print(row_index * len(splitfile) + col_index)
+tiles_to_check = get_relevant_tiles(splitfile)
+
+for index, (row_index, col_index) in enumerate(tiles_to_check):
+  if is_loop(splitfile, (row_index, col_index)):
+    loops += 1
+  print(index, "/", len(tiles_to_check))
 
 print(loops)
