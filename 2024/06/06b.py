@@ -14,8 +14,9 @@ def tile(pos, override_tile=(-1, -1)):
 
 def find_start(board):
   for idx, row in enumerate(board):
-    if row.find("^") > -1:
-      return idx, row.find("^")
+    start_index = row.find("^")
+    if start_index > -1:
+      return idx, start_index
 
 
 def next_tile(y, x, dir):
@@ -30,14 +31,14 @@ def next_tile(y, x, dir):
 
 
 def get_relevant_tiles(board):
-  tiles_visited = set()
+  relevant_tiles = set()
   row, col = find_start(splitfile)
   direction = "N"
   directions = ["N", "E", "S", "W"]
 
   while True:
     if tile((row, col)) == ".":
-      tiles_visited.add((row, col))
+      relevant_tiles.add((row, col))
 
     if tile(next_tile(row, col, direction)) == "#":
       direction = directions[(directions.index(
@@ -47,7 +48,7 @@ def get_relevant_tiles(board):
 
     row, col = next_tile(row, col, direction)
 
-  return tiles_visited
+  return relevant_tiles
 
 
 def is_loop(board, override_tile):
@@ -62,10 +63,11 @@ def is_loop(board, override_tile):
     else:
       tiles_visited[(row, col)].append(direction)
 
-    if tile(next_tile(row, col, direction), override_tile) == "#":
+    # Look ahead to next tile, change direction if it is an obstacle
+    while tile(next_tile(row, col, direction), override_tile) == "#":
       direction = directions[(directions.index(
           direction) + 1) % len(directions)]
-    elif tile(next_tile(row, col, direction), override_tile) == None:
+    if tile(next_tile(row, col, direction), override_tile) == None:
       return False
 
     row, col = next_tile(row, col, direction)
@@ -78,6 +80,5 @@ tiles_to_check = get_relevant_tiles(splitfile)
 for index, (row_index, col_index) in enumerate(tiles_to_check):
   if is_loop(splitfile, (row_index, col_index)):
     loops += 1
-  print(index, "/", len(tiles_to_check))
 
 print(loops)
