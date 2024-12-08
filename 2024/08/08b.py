@@ -38,6 +38,4 @@ for row_index, row in enumerate(splitfile):
 for letter in antennas:
   find_antenodes(antennas[letter])
 
-
-print(antenodes)
 print(len(antenodes))
