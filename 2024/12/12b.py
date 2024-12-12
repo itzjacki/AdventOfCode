@@ -1,4 +1,4 @@
-with open("12/test.txt", "r") as f:
+with open("12/input.txt", "r") as f:
   garden = [list(row) for row in f.read().split("\n")]
 
 
@@ -8,30 +8,45 @@ def plot(tile):
   return "."
 
 
-def neighbors(tile):
+def get_neighbor(tile, direction):
   (y, x) = tile
-  return [((y - 1, x), "S"), ((y, x - 1), "W"), ((y + 1, x), "N"), ((y, x + 1), "E")]
+  if direction == "N":
+    return (y + 1, x)
+  if direction == "E":
+    return (y, x + 1)
+  if direction == "S":
+    return (y - 1, x)
+  if direction == "W":
+    return (y, x - 1)
 
 
-def side_neighbors(tile_with_direction):
-  ((y, x), direction) = tile_with_direction
+def neighbors(tile):
+  return [(get_neighbor(tile, "N"), "N"), (get_neighbor(tile, "E"), "E"), (get_neighbor(tile, "S"), "S"), (get_neighbor(tile, "W"), "W")]
+
+
+def side_directions(direction):
   if direction == "N" or direction == "S":
-    return [(y, x - 1), (y, x + 1)]
-  if direction == "E" or direction == "W":
-    return [(y - 1, x), (y + 1, x)]
+    return ["W", "E"]
+  if direction == "W" or direction == "E":
+    return ["N", "S"]
 
 
-def remove_direction(l, tile_with_dir, ignore=((-1, -1), "N")):
-  if tile_with_dir in l and tile_with_dir != ignore:
-    l.remove(tile_with_dir)
+def remove_in_direction(tile_with_direction, direction_to_remove, list_to_remove_from):
+  (tile, direction) = tile_with_direction
+  next_tile_with_direction = (get_neighbor(
+      tile, direction_to_remove), direction)
+  if next_tile_with_direction in list_to_remove_from:
+    list_to_remove_from.remove(next_tile_with_direction)
+    remove_in_direction(next_tile_with_direction,
+                        direction_to_remove, list_to_remove_from)
 
 
 def number_of_sides(sides):
   sides_list = list(sides)
-  for (tile, direction) in sides_list:
-    for potential_neighbor in side_neighbors((tile, direction)):
-      remove_direction(sides_list, (potential_neighbor, direction),
-                       (tile, direction))
+  for tile_with_direction in sides_list:
+    sides_to_check = side_directions(tile_with_direction[1])
+    remove_in_direction(tile_with_direction, sides_to_check[0], sides_list)
+    remove_in_direction(tile_with_direction, sides_to_check[1], sides_list)
   return len(sides_list)
 
 
@@ -61,7 +76,7 @@ def find_region(tile):
 
     garden[current_tile[0]][current_tile[1]] = "."
   if number_of_sides(sides) * area > 0:
-    print("Sides", number_of_sides(sides), "area", area)
+    print(area, number_of_sides(sides))
   return number_of_sides(sides) * area
 
 
